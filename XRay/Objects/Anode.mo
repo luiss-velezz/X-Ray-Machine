@@ -1,4 +1,4 @@
-within XRay;
+within XRay.Objects;
 
 model Anode
 equation
