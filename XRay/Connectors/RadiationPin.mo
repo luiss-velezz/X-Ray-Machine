@@ -1,6 +1,6 @@
 within XRay.Connectors;
 
-model RadiationPin
+connector RadiationPin
 equation
 
 end RadiationPin;

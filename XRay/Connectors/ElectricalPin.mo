@@ -1,6 +1,6 @@
 within XRay.Connectors;
 
-model ElectricalPin
+connector ElectricalPin
 equation
 
 end ElectricalPin;

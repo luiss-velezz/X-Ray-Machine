@@ -1,6 +1,6 @@
 within XRay.Connectors;
 
-model ThermalPin
+connector ThermalPin
 equation
 
 end ThermalPin;
