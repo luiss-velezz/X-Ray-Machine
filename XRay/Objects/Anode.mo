@@ -2,7 +2,7 @@ within XRay.Objects;
 
 model Anode
   // Parameters
-  parameter Modelica.Units.SI.Angle theta_anode = 12  "Anode angle"; // (degrees)   SHOULD THIS BE CONVERTED TO RADS???
+  parameter Modelica.Units.NonSI.Angle_deg theta_anode = 12  "Anode angle"; // (degrees)
   parameter Modelica.Units.SI.Efficiency eta = 0.01  "X-ray conversion efficiency";
   parameter Modelica.Units.SI.Area sigma = 1e-6  "Nominal impact area"; // (m²)
 

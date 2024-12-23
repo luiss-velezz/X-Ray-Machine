@@ -8,9 +8,9 @@ model DC_circuit_test "Example DC circuit to validate Electrical Components"
   XRay.Objects.Electrical.Ground GND;                 // Ground connection
   
 equation
-  connect(V1.p, C1.p);
-  connect(C1.n, R1.p);
-  connect(R1.n, V1.n);
+  connect(V1.p, R1.p);
+  connect(R1.n, C1.p);
+  connect(C1.n, V1.n);
   connect(V1.n, GND.gnd);
   
 initial equation
