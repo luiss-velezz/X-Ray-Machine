@@ -8,7 +8,7 @@ model DC_window_circuit_test "Example DC circuit to validate Electrical Componen
   // Capacitor with 1 microFarad
   Objects.Electrical.VsourceWindow V1(Vdc = 220, t_Start = 0.5, t_End = 1);
   // AC Voltage source with 220V amplitude and 50Hz frequency
-  Objects.Electrical.Ground GND;
+  Objects.Ground GND;
   // Ground connection
 equation
   connect(V1.p, R1.p);

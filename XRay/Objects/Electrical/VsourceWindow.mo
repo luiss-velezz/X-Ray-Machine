@@ -1,7 +1,7 @@
 within XRay.Objects.Electrical;
 
 model VsourceWindow "Voltage source with active time window"
-  extends TwoTerminal;    // Extends the TwoTerminal model, inheriting its properties and equations
+  extends Objects.TwoTerminal;    // Extends the TwoTerminal model, inheriting its properties and equations
 
   parameter Modelica.Units.SI.Voltage Vdc = 220 "Voltage";      // Define a parameter V representing the voltage
   parameter Modelica.Units.SI.Time t_Start = 0.5 "Start time";  // Define a parameter t_Start for the start time

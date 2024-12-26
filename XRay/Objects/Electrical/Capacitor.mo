@@ -1,7 +1,7 @@
 within XRay.Objects.Electrical;
 
 model Capacitor "Ideal Capacitor"
- extends TwoTerminal;           // Extends the TwoTerminal model, inheriting its properties and equations
+ extends Objects.TwoTerminal;           // Extends the TwoTerminal model, inheriting its properties and equations
  parameter Modelica.Units.SI.Capacitance C;  // Define a parameter C representing the capacitance in Farads
 equation
  // Capacitor equation: The current (i) through the capacitor is proportional to the derivative
