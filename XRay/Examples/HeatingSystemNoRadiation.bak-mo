@@ -1,0 +1,6 @@
+within XRay.Examples;
+
+model HeatingSystemNoRadiation
+equation
+
+end HeatingSystemNoRadiation;
