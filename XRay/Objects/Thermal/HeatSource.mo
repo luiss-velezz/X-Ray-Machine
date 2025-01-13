@@ -6,5 +6,5 @@ model HeatSource
 
 equation
   //powerOutput = heatingPower;
-  powerOutput = if (time <= 400) then heatingPower else 0;
+  powerOutput = if (time <= 180) then heatingPower else 0;
 end HeatSource;

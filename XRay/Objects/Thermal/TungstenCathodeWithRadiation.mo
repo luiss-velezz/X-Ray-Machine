@@ -2,7 +2,7 @@ within XRay.Objects.Thermal;
 
 model TungstenCathodeWithRadiation
   // Parameters
-  parameter Modelica.Units.SI.Mass mass = 0.05; // kg
+  parameter Modelica.Units.SI.Mass mass = 0.0001; // kg
   parameter Modelica.Units.SI.SpecificHeatCapacity specificHeat = 132; // J/(kg*K) for tungsten
   parameter Modelica.Units.SI.Temperature initialTemperature = 300; // K (20°C)
   parameter Modelica.Units.SI.Temperature ambientTemperature = 293.15; // K (20°C)
@@ -23,7 +23,7 @@ equation
   // Energy balance equation with heat loss and radiation heating
   mass * specificHeat * der(temperature) = heatingPower 
                                            - heatTransferCoefficient * surfaceArea * (temperature - ambientTemperature)
-                                           + Modelica.Constants.sigma * emissivity * surfaceArea * (temperature^4 - ambientTemperature^4);
+                                           - Modelica.Constants.sigma * emissivity * surfaceArea * (temperature^4-ambientTemperature^4);
                                            
 //  mass * specificHeat * der(temperature) = heatingPower 
 //                                           - heatTransferCoefficient * surfaceArea * (temperature - ambientTemperature)

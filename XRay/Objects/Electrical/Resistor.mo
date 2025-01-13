@@ -2,9 +2,11 @@ within XRay.Objects.Electrical;
 
 model Resistor "Ideal resistor"
   extends Objects.TwoTerminal;     // Extends the TwoTerminal model, inheriting its properties and equations
-  parameter Modelica.Units.SI.Resistance R;  // Define a parameter R representing the resistance in Ohms
+  parameter Modelica.Units.SI.Resistance R(min=0);  // Define a parameter R representing the resistance in Ohms which is >= 0
 equation
   // Ohm's Law: The voltage across the resistor (v) is equal to the product of the resistance (R)
   // and the current (i) through the resistor
   R*i = v;
+  // Assert that the inputed value is physically feasible
+  assert(R >= 0, "Resistance should be non-negative and a Real number");
 end Resistor;
