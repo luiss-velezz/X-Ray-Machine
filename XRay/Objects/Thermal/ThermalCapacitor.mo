@@ -19,8 +19,8 @@ model ThermalCapacitor
 equation
   T = port.T;
   der_T = der(T);
-  //C*der(T) = port.Q_flow; 
-  mass * specificHeat * der(T) = port.Q_flow - heatTransferCoefficient * surfaceArea * T;
+  mass*specificHeat*der(T) = port.Q_flow; 
+  //mass * specificHeat * der(T) = port.Q_flow - heatTransferCoefficient * surfaceArea * T;
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
             100,100}}), graphics={
