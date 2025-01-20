@@ -1,0 +1,9 @@
+ElectricalPin
+PositivePin
+NegativePin
+TwoTerminal
+ThermalPin
+ThermalPin_1
+ThermalPin_2
+ConditionalThermalPort
+HeatTwoTerminal

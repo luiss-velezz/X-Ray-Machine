@@ -6,6 +6,6 @@ model Capacitor "Ideal Capacitor"
 equation
  // Capacitor equation: 
  C*der(v) = i;
- // Add assertion to check for positive resistance 
+ // Add assertion to check for positive capacitance 
  assert(C >= 0, "Capacitance should be non-negative and a Real number");
 end Capacitor;

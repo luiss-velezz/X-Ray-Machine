@@ -6,4 +6,6 @@ HeatingSystemTungsten
 TungstenHeatingWithLoss
 HeatingSystemWithRadiation
 HeatingSystemWithNoRadiation
-BreakResistor
+ResistivityTest
+DynamicResistor
+CathodeExample

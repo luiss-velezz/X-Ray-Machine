@@ -1,0 +1,35 @@
+within XRay.Objects.Electrical;
+
+model DynamicResistor
+  extends Resistor;
+
+  parameter Modelica.Units.SI.Length length(min= 1e-9) = 0.01; // 10 mm
+  parameter Modelica.Units.SI.Radius radius(min= 1e-6) = 0.001; // 1 mm
+  parameter Modelica.Units.SI.Resistivity rho_ref = 5.6e-8; // Ω·m
+  parameter Modelica.Units.SI.Temperature T_ref(min= 273.15) = 273.15 "Reference temperature (K)";
+  parameter Real alpha = 0.004 "Temperature coefficient of resistivity (1/K)";
+
+  Modelica.Units.SI.Temperature T "Resistor temperature";
+  Modelica.Units.SI.Resistance R_actual "Actual resistance (Ω)";
+
+  // Calculate cross-sectional area of the cylinder
+  Modelica.Units.SI.Area crossSectionalArea = Modelica.Constants.pi * radius^2 "Cross-sectional area of the cylindrical resistor";
+
+  // Calculate reference resistance at T_ref
+  Modelica.Units.SI.Resistance R_ref = (rho_ref * length) / crossSectionalArea "Reference resistance at T_ref";
+
+equation
+  // Dynamically adjust resistance based on temperature
+  R_actual = R_ref * (1 + alpha * (T - T_ref));
+
+  // Override the resistance parameter with the actual temperature-dependent resistance
+  R = R_actual;
+
+  // For demonstration purposes, you can connect T to a thermal port or set it to a constant value
+  // T = 300; // Example constant temperature, replace with actual temperature source
+
+end DynamicResistor;
+
+
+
+

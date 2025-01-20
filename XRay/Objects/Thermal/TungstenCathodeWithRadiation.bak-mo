@@ -22,7 +22,7 @@ model TungstenCathodeWithRadiation
 equation
   // Energy balance equation with heat loss and radiation heating
   mass * specificHeat * der(temperature) = heatingPower 
-                                           - heatTransferCoefficient * surfaceArea * (temperature - ambientTemperature)
+                                           - heatTransferCoefficient * surfaceArea * temperature
                                            - Modelica.Constants.sigma * emissivity * surfaceArea * (temperature^4-ambientTemperature^4);
                                            
 //  mass * specificHeat * der(temperature) = heatingPower 

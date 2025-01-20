@@ -1,43 +1,26 @@
 within XRay.Objects.Beam;
 
 model Cathode
-  extends Objects.Electrical.Resistor;
-  
-  // Parameters
-  parameter Modelica.Units.SI.Voltage V_filament = 10  "Filament voltage"; // (V)
-  parameter Modelica.Units.SI.Resistance R_filament = 5 "Filament resistance"; // (Ohm)
-  parameter Modelica.Units.SI.Temperature T_ambient = 300 "Ambient temperature"; // (K)
-  parameter Modelica.Units.SI.Emissivity epsilon = 0.9 "Filament emissivity";
-  parameter Modelica.Units.SI.Area A_filament = 1e-6 "Filament surface area"; // (m²)
-  parameter Modelica.Units.SI.Voltage V_applied = 50000 "Applied high voltage"; // (V)
-  
-  //Power pin
-  input Modelica.Units.SI.Power p_in;
-
-  // Variables
-  Modelica.Units.SI.Current I_filament "Current through the filament"; // (A)
-  Modelica.Units.SI.Current I_electron "Electron current emitted by the cathode"; // (A)
-  Modelica.Units.SI.Power P_filament "Power dissipated by the filament"; // (W)
-  Modelica.Units.SI.Temperature T_cathode "Temperature of the cathode"; // (K)
-
-  // Constants
-  constant Real sigma_thermal = 5.67e-8 "Stefan-Boltzmann constant"; // (W/m²K⁴)
-
+  Electrical.Resistor ElectricalProperties(R = 5, alpha = .0045, T_ref = 293.5, i(start = 0), useHeatPort = true) annotation(
+    Placement(transformation(origin = {-54, 10}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
+  Thermal.ThermalCapacitor ThermalProperties annotation(
+    Placement(transformation(origin = {12, 46}, extent = {{-10, -10}, {10, 10}})));
+  Ports.PositivePin p annotation(
+    Placement(transformation(origin = {2, 100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-22, 66}, extent = {{-10, -10}, {10, 10}})));
+  Ports.NegativePin n annotation(
+    Placement(transformation(origin = {2, -98}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-36, -32}, extent = {{-10, -10}, {10, 10}})));
+  Ports.ThermalPin_1 thermal_port annotation(
+    Placement(transformation(origin = {76, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {58, 12}, extent = {{-10, -10}, {10, 10}})));
 equation
-  // Ohm's law for filament
-  V_filament = I_filament * R_filament;
-
-  // Power dissipated in the filament
-  P_filament = V_filament * I_filament;
-
-  // Heat radiated by the filament (Stefan-Boltzmann law)
-  P_filament = sigma_thermal * epsilon * A_filament * (T_cathode^4 - T_ambient^4);
-
-  // Electron emission current (Richardson-Dushman equation)
-  I_electron = 4 * Modelica.Constants.pi * Modelica.Constants.e * 
-               (Modelica.Constants.k^2 / Modelica.Constants.h^3) * T_cathode^2 * 
-               exp(-Modelica.Constants.e * V_applied / (Modelica.Constants.k * T_cathode));
-               
-  //i_out = I_electron;
-  
+  connect(ElectricalProperties.n, n) annotation(
+    Line(points = {{-54, 0}, {-45, 0}, {-45, -42}, {-46, -42}, {-46, -51}, {2, -51}, {2, -98}}, color = {0, 0, 255}));
+  connect(ElectricalProperties.p, p) annotation(
+    Line(points = {{-54, 20}, {-54, 69}, {2, 69}, {2, 100}}, color = {0, 0, 255}));
+  connect(ThermalProperties.port, ElectricalProperties.heatPort) annotation(
+    Line(points = {{12, 36}, {-11, 36}, {-11, 20}, {-44, 20}, {-44, 10}}, color = {191, 0, 0}));
+  connect(ElectricalProperties.heatPort, thermal_port) annotation(
+    Line(points = {{-44, 10}, {22, 10}, {22, 0}, {76, 0}}, color = {191, 0, 0}));
+  annotation(
+    Diagram(graphics = {Rectangle(lineColor = {245, 194, 17}, fillColor = {222, 221, 218}, lineThickness = 0.75, extent = {{-76, 100}, {76, -100}})}, coordinateSystem(extent = {{-76, -100}, {76, 100}})),
+    Icon(coordinateSystem(extent = {{-76, -100}, {76, 100}})));
 end Cathode;

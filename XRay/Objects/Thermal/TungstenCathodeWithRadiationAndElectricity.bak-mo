@@ -1,0 +1,41 @@
+within XRay.Objects.Thermal;
+
+model TungstenCathodeWithRadiationAndElectricity
+  extends TwoTerminal;
+  // Parameters
+  parameter Modelica.Units.SI.Mass mass = 0.0001; // kg
+  parameter Modelica.Units.SI.SpecificHeatCapacity specificHeat = 132; // J/(kg*K) for tungsten
+  //parameter Modelica.Units.SI.Temperature initialTemperature = 300; // K (20°C)
+  parameter Modelica.Units.SI.Temperature ambientTemperature = 293.15; // K (20°C)
+  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 10; // W/(m^2*K)
+  parameter Modelica.Units.SI.Area surfaceArea = 1e-6; // m^2
+  parameter Real emissivity = 0.35; // Emissivity of tungsten
+  //parameter Modelica.Units.SI.Length separation = 0.005; // 5 mm
+  //parameter Modelica.Constants.StefanBoltzmann sigma = 5.67e-8; // Stefan-Boltzmann constant
+
+  // Inputs
+  //Modelica.Blocks.Interfaces.RealInput heatingPower;
+  Connectors.ThermalPin port_a;
+  //Connectors.ThermalPin port_b;
+  //Modelica.Blocks.Interfaces.RealInput radiatingSurfaceTemperature;
+  
+  //parameter Modelica.Units.SI.Power Q_in = 80;
+
+  // Variables
+  //Modelica.Units.SI.Temperature temperature(start = initialTemperature);
+
+equation
+  //port_a.Q_dot = Q_in;
+  // Energy balance equation with heat loss and radiation heating
+  mass * specificHeat * der(port_a.T) =  
+  v*i 
+  - heatTransferCoefficient * surfaceArea * port_a.T;
+  //- Modelica.Constants.sigma * emissivity * surfaceArea * (port_a.T^4 - port_b.T^4);
+                                           
+  //port_b.T = ambientTemperature;
+  //port_b.Q_dot = - port_a.Q_dot;
+
+  // Initial condition
+//  initial equation
+//    port_a.T = ambientTemperature;
+end TungstenCathodeWithRadiationAndElectricity;

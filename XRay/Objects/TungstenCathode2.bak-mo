@@ -1,0 +1,27 @@
+within XRay.Objects;
+
+model TungstenCathode2
+  extends Objects.Electrical.Resistor;
+  // Parameters
+  parameter Modelica.Units.SI.Mass mass(min=0) = 0.0001; // kg
+  parameter Modelica.Units.SI.SpecificHeatCapacity specificHeat(min=0) = 132; // J/(kg*K) for tungsten
+  parameter Modelica.Units.SI.Temperature ambientTemperature(min=0) = 293.15; // K (20°C)
+  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient(min=0) = 170; // W/(m^2*K)
+  parameter Modelica.Units.SI.Area surfaceArea(min=0) = 1e-6; // m^2
+  
+  // Port
+  Connectors.ThermalPin thermal_port;
+  
+  // Variable
+  Modelica.Units.SI.HeatFlowRate P_elec;
+equation
+
+  thermal_port.Q_dot = v*i;
+  
+  //thermal_port.Q_dot = P_elec;
+  
+    // Energy balance equation with heat loss
+  mass * specificHeat * der(thermal_port.T) = thermal_port.Q_dot
+                                           - heatTransferCoefficient * surfaceArea * thermal_port.T;
+
+end TungstenCathode2;
