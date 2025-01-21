@@ -1,26 +1,27 @@
 within XRay.Objects.Beam;
 
 model Cathode
-  Electrical.Resistor ElectricalProperties(R = 5, alpha = .0045, T_ref = 293.5, i(start = 0), useHeatPort = true) annotation(
-    Placement(transformation(origin = {-54, 10}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Thermal.ThermalCapacitor ThermalProperties annotation(
-    Placement(transformation(origin = {12, 46}, extent = {{-10, -10}, {10, 10}})));
+  //Parameters
+  
+  //Variables
+  Electrical.Resistor2 ResistiveBehavior annotation(
+    Placement(transformation(origin = {-55, 1}, extent = {{-25, -25}, {25, 25}}, rotation = -90)));
+  Thermal.ThermalCapacitor ThermalBehavior annotation(
+    Placement(transformation(origin = {40, 40}, extent = {{-24, -24}, {24, 24}})));
+  
+  //Ports
   Ports.PositivePin p annotation(
-    Placement(transformation(origin = {2, 100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-22, 66}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}})));
   Ports.NegativePin n annotation(
-    Placement(transformation(origin = {2, -98}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-36, -32}, extent = {{-10, -10}, {10, 10}})));
-  Ports.ThermalPin_1 thermal_port annotation(
-    Placement(transformation(origin = {76, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {58, 12}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}})));
+  Ports.ThermalPin_1 port_a annotation(
+    Placement(transformation(origin = {98, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}})));
 equation
-  connect(ElectricalProperties.n, n) annotation(
-    Line(points = {{-54, 0}, {-45, 0}, {-45, -42}, {-46, -42}, {-46, -51}, {2, -51}, {2, -98}}, color = {0, 0, 255}));
-  connect(ElectricalProperties.p, p) annotation(
-    Line(points = {{-54, 20}, {-54, 69}, {2, 69}, {2, 100}}, color = {0, 0, 255}));
-  connect(ThermalProperties.port, ElectricalProperties.heatPort) annotation(
-    Line(points = {{12, 36}, {-11, 36}, {-11, 20}, {-44, 20}, {-44, 10}}, color = {191, 0, 0}));
-  connect(ElectricalProperties.heatPort, thermal_port) annotation(
-    Line(points = {{-44, 10}, {22, 10}, {22, 0}, {76, 0}}, color = {191, 0, 0}));
-  annotation(
-    Diagram(graphics = {Rectangle(lineColor = {245, 194, 17}, fillColor = {222, 221, 218}, lineThickness = 0.75, extent = {{-76, 100}, {76, -100}})}, coordinateSystem(extent = {{-76, -100}, {76, 100}})),
-    Icon(coordinateSystem(extent = {{-76, -100}, {76, 100}})));
+  connect(ResistiveBehavior.port_a, port_a) annotation(
+    Line(points = {{-44, 2}, {98, 2}, {98, 0}}, color = {191, 0, 0}));
+  connect(ThermalBehavior.port, port_a) annotation(
+    Line(points = {{40, 16}, {98, 16}, {98, 0}}, color = {191, 0, 0}));
+
+annotation(
+    Icon(graphics = {Rectangle(rotation = -90,lineColor = {255, 190, 111}, fillColor = {154, 153, 150}, fillPattern = FillPattern.Sphere, extent = {{-100, 100}, {100, -100}}), Line(origin = {48, -1.06}, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier), Line(origin = {0, -47.06}, rotation = -90, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier), Line(origin = {-54, 0.94}, rotation = 180, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier), Line(origin = {0, 42.94}, rotation = 90, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier)}));
 end Cathode;

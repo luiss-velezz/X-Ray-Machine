@@ -24,19 +24,8 @@ equation
     Documentation(info="<html>
 <p>The linear resistor connects the branch voltage <em>v</em> with the branch current <em>i</em> by <em>i*R = v</em>. The Resistance <em>R</em> is allowed to be positive, zero, or negative.</p>
 </html>",
-        revisions="<html>
-<ul>
-<li><em> August 07, 2009   </em>
-       by Anton Haumer<br> temperature dependency of resistance added<br>
-       </li>
-<li><em> March 11, 2009   </em>
-       by Christoph Clauss<br> conditional heat port added<br>
-       </li>
-<li><em> 1998   </em>
-       by Christoph Clauss<br> initially implemented<br>
-       </li>
-</ul>
-</html>"),
+        revisions= "<html><head></head><body><div><i><br></i></div>
+</body></html>"),
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
             100}}), graphics={
         Rectangle(

@@ -9,16 +9,9 @@ model Ground
 equation
   gnd.v = 0; // Sets the voltage at the gnd pin to 0, representing the ground potential
   annotation (
-    Documentation(info="<html>
-<p>Ground of an electrical circuit. The potential at the ground node is zero. Every electrical circuit has to contain at least one ground object.</p>
-</html>",
-        revisions="<html>
-<ul>
-<li><em> 1998   </em>
-       by Christoph Clauss<br> initially implemented<br>
-       </li>
-</ul>
-</html>"),
+    Documentation(info= "<html><head></head><body><p>Ground of an electrical circuit. The potential at the ground node is zero (it becomes the reference for all other nodes).</p>
+</body></html>",
+        revisions= "<html><head></head><body></body></html>"),
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
             100}}), graphics={
         Line(points={{-60,50},{60,50}}, color={0,0,255}),

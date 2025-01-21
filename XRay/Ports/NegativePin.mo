@@ -17,13 +17,7 @@ The reason could be that
     Documentation(info="<html>
 <p>Connectors PositivePin and NegativePin are nearly identical. The only difference is that the icons are different in order to identify more easily the pins of a component. Usually, connector PositivePin is used for the positive and connector NegativePin for the negative pin of an electrical component.</p>
 </html>",
-        revisions="<html>
-<dl>
-<dt><em>1998</em></dt>
-<dd>by Christoph Clauss initially implemented
-</dd>
-</dl>
-</html>"),
+        revisions= "<html><head></head><body></body></html>"),
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
             100}}), graphics={Rectangle(
           extent={{-100,100},{100,-100}},
