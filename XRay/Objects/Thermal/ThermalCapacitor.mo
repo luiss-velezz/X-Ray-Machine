@@ -1,15 +1,16 @@
 within XRay.Objects.Thermal;
 
 model ThermalCapacitor
-  //parameter Modelica.Units.SI.HeatCapacity C "Heat capacity of element (= cp*m)";
-  parameter Modelica.Units.SI.Mass mass(min = 0) = 0.01;
-  // kg
-  parameter Modelica.Units.SI.SpecificHeatCapacity specificHeat(min = 0) = 132;
-  // J/(kg*K) for tungsten
-  parameter Modelica.Units.SI.Area surfaceArea(min = 0) = 1e-6;
-  // m^2
+  //Parameters
+  parameter Modelica.Units.SI.Mass mass(min = 0) = 0.01; // kg
+  parameter Modelica.Units.SI.SpecificHeatCapacity specificHeat(min = 0) = 132; // J/(kg*K) for tungsten
+  parameter Modelica.Units.SI.Area surfaceArea(min = 0) = 1e-6; // m^2
+  
+  //Variables
   Modelica.Units.SI.Temperature T(start = 293.15, displayUnit = "degC") "Temperature of element";
   Modelica.Units.SI.TemperatureSlope der_T(start = 0) "Time derivative of temperature (= der(T))";
+  
+  //Ports
   Ports.ThermalPin_1 port annotation(
     Placement(transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
 equation

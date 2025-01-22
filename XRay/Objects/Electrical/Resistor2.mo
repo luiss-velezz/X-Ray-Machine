@@ -2,10 +2,9 @@ within XRay.Objects.Electrical;
 
 model Resistor2
   
-  parameter Modelica.Units.SI.Resistance R(start=1)
-    "Resistance at temperature T_ref";
-  parameter Modelica.Units.SI.Temperature T_ref=300.15 "Reference temperature";
-  parameter Modelica.Units.SI.LinearTemperatureCoefficient alpha=0
+  parameter Modelica.Units.SI.Resistance R(start=1) "Resistance at temperature T_ref";
+  parameter Modelica.Units.SI.Temperature T_ref(min=0)=300.15 "Reference temperature";
+  parameter Modelica.Units.SI.LinearTemperatureCoefficient alpha(min=0)=0
     "Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))";
     
   Modelica.Units.SI.Voltage v;

@@ -1,4 +1,5 @@
 ThermalCapacitor
 BodyRadiation
 FixedTemperature
+TemperatureSensor
 HeatSource
