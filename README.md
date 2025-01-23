@@ -1,1 +1,1 @@
-Digital Twin Engineering roject
+Digital Twin Engineering Project

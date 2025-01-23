@@ -1,43 +1,45 @@
 within XRay.Objects.Beam;
 
 model Cathode
-  extends Objects.Electrical.Resistor;
-  
-  // Parameters
-  parameter Modelica.Units.SI.Voltage V_filament = 10  "Filament voltage"; // (V)
-  parameter Modelica.Units.SI.Resistance R_filament = 5 "Filament resistance"; // (Ohm)
-  parameter Modelica.Units.SI.Temperature T_ambient = 300 "Ambient temperature"; // (K)
-  parameter Modelica.Units.SI.Emissivity epsilon = 0.9 "Filament emissivity";
-  parameter Modelica.Units.SI.Area A_filament = 1e-6 "Filament surface area"; // (m²)
-  parameter Modelica.Units.SI.Voltage V_applied = 50000 "Applied high voltage"; // (V)
-  
-  //Power pin
-  input Modelica.Units.SI.Power p_in;
-
-  // Variables
-  Modelica.Units.SI.Current I_filament "Current through the filament"; // (A)
-  Modelica.Units.SI.Current I_electron "Electron current emitted by the cathode"; // (A)
-  Modelica.Units.SI.Power P_filament "Power dissipated by the filament"; // (W)
-  Modelica.Units.SI.Temperature T_cathode "Temperature of the cathode"; // (K)
-
-  // Constants
-  constant Real sigma_thermal = 5.67e-8 "Stefan-Boltzmann constant"; // (W/m²K⁴)
-
+  //Parameters
+  parameter Modelica.Units.SI.Resistance R = 5 "Resistance at temperature T_ref";
+  parameter Modelica.Units.SI.Temperature T_ref=300.15 "Reference temperature";
+  parameter Modelica.Units.SI.LinearTemperatureCoefficient alpha=0.0045
+    "Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref))";
+    
+  parameter Modelica.Units.SI.Mass mass = 0.01 "Mass of the cathode"; // kg
+  parameter Modelica.Units.SI.SpecificHeatCapacity specificHeat = 132 "Specific heat of the chatode's material"; // J/(kg*K) for tungsten
+  parameter Modelica.Units.SI.Area surfaceArea = 1e-6 "Surface area of the cathode";   // m^2
+  //Variables
+  Electrical.Resistor2 ResistiveBehavior(
+    R=R, 
+    T_ref=T_ref, 
+    alpha=alpha
+  ) annotation(
+    Placement(transformation(origin = {-55, 1}, extent = {{-25, -25}, {25, 25}}, rotation = -90)));
+  Thermal.ThermalCapacitor ThermalBehavior(
+    mass = mass,
+    specificHeat = specificHeat,
+    surfaceArea = surfaceArea
+  ) annotation(
+    Placement(transformation(origin = {40, 40}, extent = {{-24, -24}, {24, 24}})));
+  //Ports
+  Ports.PositivePin p annotation(
+    Placement(transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}})));
+  Ports.NegativePin n annotation(
+    Placement(transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}})));
+  Ports.ThermalPin_1 port_a annotation(
+    Placement(transformation(origin = {98, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}})));
 equation
-  // Ohm's law for filament
-  V_filament = I_filament * R_filament;
+  connect(ResistiveBehavior.port_a, port_a) annotation(
+    Line(points = {{-44, 2}, {98, 2}, {98, 0}}, color = {191, 0, 0}));
+  connect(ThermalBehavior.port, port_a) annotation(
+    Line(points = {{40, 16}, {98, 16}, {98, 0}}, color = {191, 0, 0}));
+  connect(ResistiveBehavior.p, p) annotation(
+    Line(points = {{-54, 26}, {-56, 26}, {-56, 80}, {0, 80}, {0, 100}}, color = {0, 0, 255}));
+  connect(ResistiveBehavior.n, n) annotation(
+    Line(points = {{-54, -24}, {-54, -62}, {0, -62}, {0, -100}}, color = {0, 0, 255}));
 
-  // Power dissipated in the filament
-  P_filament = V_filament * I_filament;
-
-  // Heat radiated by the filament (Stefan-Boltzmann law)
-  P_filament = sigma_thermal * epsilon * A_filament * (T_cathode^4 - T_ambient^4);
-
-  // Electron emission current (Richardson-Dushman equation)
-  I_electron = 4 * Modelica.Constants.pi * Modelica.Constants.e * 
-               (Modelica.Constants.k^2 / Modelica.Constants.h^3) * T_cathode^2 * 
-               exp(-Modelica.Constants.e * V_applied / (Modelica.Constants.k * T_cathode));
-               
-  //i_out = I_electron;
-  
+annotation(
+    Icon(graphics = {Rectangle(rotation = -90,lineColor = {255, 190, 111}, fillColor = {154, 153, 150}, fillPattern = FillPattern.Sphere, extent = {{-100, 100}, {100, -100}}), Line(origin = {48, -1.06}, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier), Line(origin = {0, -47.06}, rotation = -90, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier), Line(origin = {-54, 0.94}, rotation = 180, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier), Line(origin = {0, 42.94}, rotation = 90, points = {{-40, 1.05937}, {-20, 1.05937}, {-10, 21.0594}, {10, -18.9406}, {30, 1.05937}, {40, 1.05937}}, color = {224, 27, 36}, thickness = 2, arrow = {Arrow.None, Arrow.Filled}, smooth = Smooth.Bezier)}));
 end Cathode;

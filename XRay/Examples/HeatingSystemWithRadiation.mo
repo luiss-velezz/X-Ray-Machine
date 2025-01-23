@@ -1,10 +1,10 @@
 within XRay.Examples;
 
 model HeatingSystemWithRadiation
-  Objects.Thermal.HeatSourceWithRadiation heatSource;
+  Objects.Thermal.HeatSourceWithRadiation Q1(heatingPower= 80);//, ambientTemperature = 3000);
   Objects.Thermal.TungstenCathodeWithRadiation tungstenCathode;
 
 equation
-  connect(heatSource.powerOutput, tungstenCathode.heatingPower);
-  connect(heatSource.radiatingSurfaceTemperatureOutput, tungstenCathode.radiatingSurfaceTemperature);
+  connect(Q1.powerOutput, tungstenCathode.heatingPower);
+  connect(Q1.radiatingSurfaceTemperatureOutput, tungstenCathode.radiatingSurfaceTemperature);
 end HeatingSystemWithRadiation;
