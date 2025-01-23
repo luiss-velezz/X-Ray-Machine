@@ -44,6 +44,9 @@ model PID_VoltageSource2
     // Electrical connections
     p.v = sourceVoltage;
     p.i + n.i = 0;
+    
+  initial equation
+    integral = 1;
 
     annotation (
         Diagram(

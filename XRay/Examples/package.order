@@ -16,3 +16,6 @@ PID_test
 PID_test2
 PID_test3
 ClockTest
+CalcTest
+PID_test4
+PID_test_sensing
