@@ -13,9 +13,9 @@ model PID_test4
     Placement(transformation(origin = {-16, 34}, extent = {{-18, -18}, {18, 18}})));
   Objects.Electrical.Ground GND1 annotation(
     Placement(transformation(origin = {-90, -36}, extent = {{-10, -10}, {10, 10}})));
-  Objects.Beam.ThermionicEmissionCalc thermionicEmissionCalc annotation(
+  Objects.Beam.ThermionicEmissionCalc thermionicEmissionCalc(HVS(displayUnit = "kV") = 4.5e5)  annotation(
     Placement(transformation(origin = {20, 50}, extent = {{-10, -10}, {10, 10}})));
-  Objects.Beam.AnodeCalculator anodeCalculator annotation(
+  Objects.Beam.AnodeCalculator anodeCalculator(HVS(displayUnit = "kV"))  annotation(
     Placement(transformation(origin = {52, 50}, extent = {{-10, -10}, {10, 10}})));
   Objects.Beam.Collimator collimator annotation(
     Placement(transformation(origin = {86, 50}, extent = {{-10, -10}, {10, 10}})));
