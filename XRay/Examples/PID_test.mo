@@ -11,6 +11,8 @@ model PID_test
     Placement(transformation(origin = {-64, 0}, extent = {{-10, -10}, {10, 10}})));
   Objects.Electrical.Ground GND annotation(
     Placement(transformation(origin = {-50, -42}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Blocks.Sources.Pulse pulse(amplitude = 1, nperiod = -1, period = 120, width = 50) annotation(
+    Placement(transformation(origin = {20, -46}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(pID_VoltageSource.p, cathode.p) annotation(
     Line(points = {{-64, 10}, {-64, 34}, {-20, 34}, {-20, 10}}, color = {0, 0, 255}));

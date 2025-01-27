@@ -1,6 +1,6 @@
 within XRay.Objects.Electrical;
 
-model PID_VoltageSource3
+model PID_VoltageSource4
   "Controlled voltage source with a PID controller for temperature-based voltage output regulation"
 
   // Parameters for PID controller
@@ -9,7 +9,6 @@ model PID_VoltageSource3
   parameter Real K_i = 0.1 "Integral gain";
   parameter Real K_d = 0.01 "Derivative gain";
   parameter Modelica.Units.SI.Voltage V_max = 20 "Maximum output voltage";
-  parameter Modelica.Units.SI.Voltage V_off = 3.5 "Output voltage when Switching is false";
 
   // Internal variables
   Real error "Temperature error";
@@ -25,14 +24,17 @@ model PID_VoltageSource3
   Ports.NegativePin n annotation(
     Placement(transformation(origin = {0, -90}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}})));
   Logic.RealInput TemperatureInput annotation(
-    Placement(transformation(origin = {-100, -2}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-102, 40}, extent = {{-20, -20}, {20, 20}})));
-  Logic.BooleanInput Switching annotation(
-    Placement(transformation(origin = {-108, 26}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-100, -40}, extent = {{-20, -20}, {20, 20}})));    
+    Placement(transformation(origin = {-100, -2}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}})));  
     
   equation 
-    
-    setpoint = if Switching then T_ref else 1500;
-  
+    // Setpoint logic
+    setpoint = if time < 500 then 
+                 T_ref 
+               else if time <= 6500 then 
+                 if mod(time - 500, 1200) < 600 then T_ref else 1200 
+               else 
+                 1200;
+
     // Temperature error calculation
     error = setpoint - TemperatureInput;
 
@@ -45,22 +47,23 @@ model PID_VoltageSource3
     // Control signal calculation
     controlSignal = K_p * error + K_i * integral + K_d * derivative;
 
-    // Limit the control signal to the maximum allowed value
-    //controlSignal = if controlSignal > V_max then V_max else if controlSignal < 0 then 0 else controlSignal;
-
-    // Determine source voltage based on Switching signal
-    sourceVoltage = if Switching then controlSignal else V_off;
+    // Limit the output voltage to the maximum allowed value
+    sourceVoltage = if controlSignal > V_max then V_max else if controlSignal < 0 then 0 else controlSignal;
 
     // Electrical connections
     p.v = sourceVoltage;
     p.i + n.i = 0;
+    
+  initial equation
+    integral = 1;
 
-    annotation (
-        Diagram(
-            graphics = {
-                Rectangle(extent={{-100, 100}, {100, -100}}, lineColor={0, 0, 255}),
-                Text(extent={{-50, 50}, {50, -50}}, textString="PID Voltage Source")
-            }
-        ),
-        Icon(graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {200, 200, 200}, extent = {{-100, 100}, {100, -100}}), Text(extent = {{-50, 50}, {50, -50}}, textString = "PID_V"), Text(origin = {45, -46}, textColor = {0, 0, 255}, extent = {{-73, 24}, {73, -24}}, textString = "V=%sourceVoltage")}));  
-end PID_VoltageSource3;
+  annotation (
+    Diagram(
+      graphics = {
+        Rectangle(extent={{-100, 100}, {100, -100}}, lineColor={0, 0, 255}),
+        Text(extent={{-50, 50}, {50, -50}}, textString="PID Voltage Source")
+      }
+    ),
+    Icon(graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {200, 200, 200}, extent = {{-100, 100}, {100, -100}}), Text(extent = {{-50, 50}, {50, -50}}, textString = "PID_V"), Text(origin = {45, -46}, textColor = {0, 0, 255}, extent = {{-73, 24}, {73, -24}}, textString = "V=%sourceVoltage")})
+  );
+end PID_VoltageSource4;
