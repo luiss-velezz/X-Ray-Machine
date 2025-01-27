@@ -1,8 +1,12 @@
 Cathode2
 Cathode
+<<<<<<< HEAD
 ThermionicEmission
 Anode
 ThermionicEmission2
 ThermionicEmissionCalc
 AnodeCalculator
 Collimator
+=======
+DoseCalc
+>>>>>>> origin/main
