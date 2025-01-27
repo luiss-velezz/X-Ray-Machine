@@ -16,3 +16,5 @@ PID_test
 PID_test2
 PID_test3
 ClockTest
+PID_test4
+DoseCalculatorTest

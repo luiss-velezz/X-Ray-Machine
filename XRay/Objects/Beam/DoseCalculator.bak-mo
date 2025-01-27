@@ -1,0 +1,30 @@
+within XRay.Objects.Beam;
+
+model DoseCalculator
+
+  // Parameters for Richardson's law
+  parameter Real A0 = 60 "Richardson constant for tungsten (A/m^2/K^2)";
+  parameter Real phi = 4.5 "Work function of tungsten (eV)";
+  parameter Real k = 1.3806e-23 "Boltzmann constant (J/K)";
+  parameter Modelica.Units.SI.Area Area = 1e-6; // Area of the cathode in m^2
+  //parameter Modelica.Units.SI.Resistance = 5;
+  //parameter Real T = 2300 "Absolute temperature (K)";
+  // Current density
+  //Modelica.Units.SI.Current J_thermionic "Current density from Richardson's law (A/m^2)";
+  // Ports
+  Ports.PositivePin p annotation(
+    Placement(transformation(origin = {0, 98}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {98, 0}, extent = {{-10, -10}, {10, 10}})));
+  Ports.ThermalPin_1 port_a annotation(
+    Placement(transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, 98}, extent = {{-10, -10}, {10, 10}})));
+equation
+
+  port_a.Q_flow = 0; // No heat flow
+
+  // Richardson's law equation
+  p.i = (A0 * port_a.T^2 * exp(-phi*Modelica.Constants.q / (k * port_a.T)))*Area;
+  //p.i = 10;
+
+  // Set the thermal port's heat flow to zero (no energy exchange)
+  //port_a.Q_flow = 0;
+
+end DoseCalculator;
