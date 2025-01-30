@@ -41,7 +41,7 @@ equation
   connect(collimator.AnodeRadiation, anodeCalculator.Radiation_xray) annotation(
     Line(points = {{76, 50}, {62, 50}}));
   annotation(
-    experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.2),
+    experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-06, Interval = 2),
     Diagram(coordinateSystem(extent = {{-120, -120}, {120, 120}})),
     Icon(coordinateSystem(extent = {{-120, -120}, {120, 120}})));
 end PID_test4;

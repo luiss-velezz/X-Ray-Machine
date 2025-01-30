@@ -7,7 +7,7 @@ model FixedTemperature "Fixed temperature boundary condition in degree Celsius"
 equation
   port.T = Modelica.Units.Conversions.from_degC(T);
   annotation(
-    Icon(coordinateSystem(preserveAspectRatio = false), graphics = {Rectangle(fillColor = {159, 159, 223}, pattern = LinePattern.None, fillPattern = FillPattern.Backward, extent = {{-100, 100}, {100, -100}}), Line(points = {{-42, 0}, {66, 0}}, color = {191, 0, 0}, thickness = 0.5), Polygon(lineColor = {191, 0, 0}, fillColor = {191, 0, 0}, fillPattern = FillPattern.Solid, points = {{52, -20}, {52, 20}, {90, 0}, {52, -20}}), Text(textColor = {0, 0, 255}, extent = {{-150, -10}, {150, -50}}, textString = "%T")}),
+    Icon(coordinateSystem(preserveAspectRatio = false), graphics = {Rectangle(fillColor = {159, 159, 223}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-100, 100}, {100, -100}}), Line(points = {{-42, 0}, {66, 0}}, color = {191, 0, 0}, thickness = 0.5), Polygon(lineColor = {191, 0, 0}, fillColor = {191, 0, 0}, fillPattern = FillPattern.Solid, points = {{52, -20}, {52, 20}, {90, 0}, {52, -20}}), Text(textColor = {0, 0, 255}, extent = {{-150, -10}, {150, -50}}, textString = "%T")}),
     Documentation(info = "<html><head></head><body><p>
 This icon represents a fixed temperature source model. The temperature is set in Celcius for convenience.</p><p><br></p><p><br></p>
 </body></html>"),
