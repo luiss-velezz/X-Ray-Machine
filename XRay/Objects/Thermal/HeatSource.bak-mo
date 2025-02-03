@@ -1,9 +1,0 @@
-within XRay.Objects.Thermal;
-
-model HeatSource
-  parameter Modelica.Units.SI.Power heatingPower = 40; // W
-  Modelica.Blocks.Interfaces.RealOutput powerOutput;
-
-equation
-  powerOutput = heatingPower;
-end HeatSource;

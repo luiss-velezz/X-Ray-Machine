@@ -1,59 +1,48 @@
 within XRay.Objects.Electrical;
 
-model PID_VoltageSource2
-  "Controlled voltage source with a PID controller for temperature-based voltage output regulation"
-
+model PID_VoltageSource2 "Controlled voltage source with a PID controller for temperature-based voltage output regulation"
   // Parameters for PID controller
-  parameter Modelica.Units.SI.Temperature T_ref = 2300 "Setpoint temperature in Kelvin";
+  parameter Modelica.Units.SI.Temperature T_ref(min = 273.15) = 2300 "Setpoint temperature in Kelvin";
   parameter Real K_p = 1 "Proportional gain";
   parameter Real K_i = 0.1 "Integral gain";
   parameter Real K_d = 0.01 "Derivative gain";
-  parameter Modelica.Units.SI.Voltage V_max = 20 "Maximum output voltage";
-
+  parameter Modelica.Units.SI.Voltage V_max(min = 0) = 20 "Maximum output voltage";
   // Internal variables
   Real error "Temperature error";
   Real integral "Integral term";
   Real derivative "Derivative term";
   Real controlSignal "Control signal output from PID controller";
   Modelica.Units.SI.Voltage sourceVoltage "Voltage provided by the source";
-
   // Ports
   Ports.PositivePin p annotation(
     Placement(transformation(origin = {0, 90}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}})));
   Ports.NegativePin n annotation(
     Placement(transformation(origin = {0, -90}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}})));
   Logic.RealInput TemperatureInput annotation(
-    Placement(transformation(origin = {-100, -2}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}})));  
-    
-    equation 
-    // Temperature error calculation
-    error = T_ref - TemperatureInput;
-
-    // Integral term (continuous integration of error)
-    der(integral) = error;
-
-    // Derivative term (rate of change of error)
-    derivative = der(error);
-
-    // Control signal calculation
-    controlSignal = K_p * error + K_i * integral + K_d * derivative;
-
-    // Limit the output voltage to the maximum allowed value
-    sourceVoltage = if controlSignal > V_max then V_max else if controlSignal < 0 then 0 else controlSignal;
-
-    // Electrical connections
-    p.v = sourceVoltage;
-    p.i + n.i = 0;
-    
-  initial equation
-    integral = 1;
-
-    annotation (
-        Diagram(
-            graphics = {
-                Rectangle(extent={{-100, 100}, {100, -100}}, lineColor={0, 0, 255}),
-                Text(extent={{-50, 50}, {50, -50}}, textString="PID Voltage Source")
-            }
-        ),
-        Icon(graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {200, 200, 200}, extent = {{-100, 100}, {100, -100}}), Text(extent = {{-50, 50}, {50, -50}}, textString = "PID_V"), Text(origin = {45, -46}, textColor = {0, 0, 255}, extent = {{-73, 24}, {73, -24}}, textString = "V=%sourceVoltage")}));
+    Placement(transformation(origin = {-100, -2}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}})));
+equation
+// Temperature error calculation
+  error = T_ref - TemperatureInput;
+// Integral term (continuous integration of error)
+  der(integral) = error;
+// Derivative term (rate of change of error)
+  derivative = der(error);
+// Control signal calculation
+  controlSignal = K_p*error + K_i*integral + K_d*derivative;
+// Limit the output voltage to the maximum allowed value
+  sourceVoltage = if controlSignal > V_max then V_max else if controlSignal < 0 then 0 else controlSignal;
+// Electrical connections
+  p.v = sourceVoltage;
+  p.i + n.i = 0;
+initial equation
+  integral = 1;
+  annotation(
+    Diagram(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}), Text(extent = {{-50, 50}, {50, -50}}, textString = "PID Voltage Source")}),
+    Icon(graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 127}, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {17, 49}, extent = {{-25, 15}, {25, -15}}), Rectangle(origin = {17, -1}, extent = {{-25, 15}, {25, -15}}), Rectangle(origin = {17, -51}, extent = {{-25, 15}, {25, -15}}), Line(origin = {-65, 0}, points = {{-19, 0}, {19, 0}}, arrow = {Arrow.None, Arrow.Filled}), Ellipse(origin = {-36, 0}, extent = {{-8, 8}, {8, -8}}), Text(origin = {-39, 3}, extent = {{-1, 1}, {1, -1}}, textString = "+"), Text(origin = {-37, -4}, extent = {{1, 0}, {-1, 0}}, textString = "-"), Rectangle(origin = {-53, -47}, extent = {{-25, 15}, {25, -15}}), Text(origin = {-54, -48}, extent = {{-16, 8}, {16, -8}}, textString = "%T_ref"), Line(origin = {-35.6416, -21.8844}, rotation = 90, points = {{-11, 0}, {13, 0}}, arrow = {Arrow.None, Arrow.Filled}), Text(origin = {17, 49}, extent = {{-19, 5}, {19, -5}}, textString = "k_p*error"), Line(origin = {-18, 0}, points = {{-10, 0}, {10, 0}}, arrow = {Arrow.None, Arrow.Filled}), Line(origin = {-14.05, 25}, points = {{-5.94721, -25}, {-5.94721, 25}}), Line(origin = {-14, 50}, points = {{-6, 0}, {6, 0}}, arrow = {Arrow.None, Arrow.Filled}), Line(origin = {-14, -26}, points = {{-6, 26}, {-6, -26}, {6, -26}}, arrow = {Arrow.None, Arrow.Filled}), Line(origin = {42.1538, 0.206948}, points = {{0, -1}, {10, 0}}, arrow = {Arrow.None, Arrow.Filled}), Line(origin = {46, 50}, points = {{4, 0}, {-4, 0}, {-4, 0}}), Line(origin = {46, -52}, points = {{4, 0}, {-4, 0}, {-4, 0}}), Ellipse(origin = {60, 0}, extent = {{-8, 8}, {8, -8}}), Text(origin = {61, 1}, extent = {{-9, 7}, {9, -7}}, textString = "+"), Line(origin = {55, 29}, points = {{-5, 21}, {5, 21}, {5, -21}, {5, -21}}, arrow = {Arrow.None, Arrow.Filled}), Line(origin = {55, -52}, points = {{-5, 0}, {5, 0}, {5, 0}}), Line(origin = {60, -30}, points = {{0, -22}, {0, 22}}, arrow = {Arrow.None, Arrow.Filled}), Line(origin = {40, 49}, points = {{28, -49}, {40, -49}, {40, 31}, {-40, 31}, {-40, 49}, {-40, 49}}), Text(origin = {17, -1}, extent = {{-19, 5}, {19, -5}}, textString = "k_i*int(error)"), Text(origin = {18, -51}, extent = {{-20, 5}, {20, -5}}, textString = "k_p*der(error)")}),
+    Documentation(info = "<html><head></head><body><!--StartFragment--><p><strong>Overview</strong></p><p>The <strong>PID_VoltageSource2</strong> model implements a controlled voltage source regulated by a PID (Proportional–Integral–Derivative) controller. The model adjusts the voltage output based on the difference between a specified temperature setpoint and an actual temperature input. It is part of the <em>XRay.Objects.Electrical</em> package and is used to simulate temperature-based voltage regulation in electrical systems.</p><hr><p><strong>Key Concepts and Equations</strong></p><ol><li><p><strong>Temperature Error Calculation</strong></p><ul><li><strong>Purpose:</strong> Determines the difference between the desired (setpoint) temperature and the actual measured temperature.</li><li><strong>Equation:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">error</span> = T_ref - TemperatureInput
+</code></div></div></pre></li></ul></li><li><p><strong>Integral Term</strong></p><ul><li><strong>Purpose:</strong> Accumulates the error over time to eliminate steady-state error.</li><li><strong>Equation:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\">der(integral) = <span class=\"hljs-type\">error</span>
+</code></div></div></pre></li><li>The integration of the error is performed continuously.</li></ul></li><li><p><strong>Derivative Term</strong></p><ul><li><strong>Purpose:</strong> Accounts for the rate of change of the error, providing predictive action.</li><li><strong>Equation:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">derivative</span> = der(error)
+</code></div></div></pre></li></ul></li><li><p><strong>PID Control Signal Calculation</strong></p><ul><li><strong>Purpose:</strong> Combines the proportional, integral, and derivative contributions to produce the control signal.</li><li><strong>Equation:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">controlSignal</span> = K_p * error + K_i * integral + K_d * derivative
+</code></div></div></pre></li></ul></li><li><p><strong>Voltage Output Limiting</strong></p><ul><li><strong>Purpose:</strong> Ensures that the output voltage does not exceed a specified maximum or fall below zero.</li><li><strong>Equation:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\">sourceVoltage = if controlSignal &gt; V_max then V_max <span class=\"hljs-keyword\">else</span> if controlSignal &lt; 0 then 0 <span class=\"hljs-keyword\">else</span> controlSignal
+</code></div></div></pre></li></ul></li><li><p><strong>Electrical Connections</strong></p><ul><li><strong>Purpose:</strong> Applies the regulated voltage to the electrical circuit.</li><li><strong>Connections:</strong><ul><li>The positive pin (<code>p</code>) is set to <code>sourceVoltage</code> (i.e., <code>p.v = sourceVoltage</code>).</li><li>The sum of currents at the positive and negative pins is maintained at zero (i.e., <code>p.i + n.i = 0</code>).</li></ul></li></ul></li></ol><hr><p><strong>Model Parameters</strong></p><ul><li><strong>T_ref</strong> (Temperature, in Kelvin)<ul><li>The desired temperature setpoint for the PID controller.</li></ul></li><li><strong>K_p</strong> (Proportional Gain)<ul><li>Determines the contribution of the current error to the control signal.</li></ul></li><li><strong>K_i</strong> (Integral Gain)<ul><li>Determines the contribution of the accumulated error over time.</li></ul></li><li><strong>K_d</strong> (Derivative Gain)<ul><li>Determines the contribution of the rate of change of the error.</li></ul></li><li><strong>V_max</strong> (Voltage)<ul><li>The maximum output voltage allowed from the source.</li></ul></li></ul><hr><p><strong>Internal Variables</strong></p><ul><li><p><strong>error</strong></p><ul><li>The instantaneous temperature error calculated as the difference between <code>T_ref</code> and <code>TemperatureInput</code>.</li></ul></li><li><p><strong>integral</strong></p><ul><li>The integral (accumulated sum) of the error over time.</li></ul></li><li><p><strong>derivative</strong></p><ul><li>The derivative (rate of change) of the error.</li></ul></li><li><p><strong>controlSignal</strong></p><ul><li>The combined output of the PID controller before voltage limiting.</li></ul></li><li><p><strong>sourceVoltage</strong></p><ul><li>The final voltage output provided to the electrical circuit after applying limits.</li></ul></li></ul><hr><p><strong>Ports</strong></p><ul><li><p><strong>PositivePin (p)</strong></p><ul><li>Electrical positive connection that delivers the controlled voltage.</li></ul></li><li><p><strong>NegativePin (n)</strong></p><ul><li>Electrical negative connection; together with the positive pin, it completes the circuit.</li></ul></li><li><p><strong>TemperatureInput</strong></p><ul><li>A logical real input that supplies the measured temperature to the PID controller.</li></ul></li></ul><hr><p><strong>Usage Notes</strong></p><ul><li>The model adjusts the voltage output based on the difference between the reference temperature (<code>T_ref</code>) and the measured temperature (<code>TemperatureInput</code>).</li><li>The PID gains (<code>K_p</code>, <code>K_i</code>, <code>K_d</code>) can be tuned to achieve the desired response, balancing speed, stability, and accuracy.</li><li>The output voltage is capped by <code>V_max</code> to prevent overvoltage, and it is not allowed to go below zero.</li><li>An initial condition is set for the integral term (with an initial value of 1) to start the integration process.</li></ul><br><!--EndFragment--></body></html>"));
 end PID_VoltageSource2;

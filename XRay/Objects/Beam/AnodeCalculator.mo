@@ -1,39 +1,42 @@
 within XRay.Objects.Beam;
 
 model AnodeCalculator
-
   // Parameters
-  parameter Modelica.Units.NonSI.Angle_deg theta_anode = 12  "Anode angle"; // (degrees)
-  parameter Modelica.Units.SI.Area sigma = 1e-6  "Nominal impact area"; // (m²)
-  parameter Modelica.Units.SI.Voltage HVS = 450000;
-
+  parameter Modelica.Units.NonSI.Angle_deg theta_anode(min = 1, max = 89) = 12 "Anode angle";
+  // (degrees)
+  parameter Modelica.Units.SI.Area sigma(min = 0) = 1e-6 "Nominal impact area";
+  // (m²)
+  parameter Modelica.Units.SI.Voltage HVS(min = 0) = 500000;
   // Variables
-  Modelica.Units.SI.Power P_xray "X-ray power"; // (W)
-  Modelica.Units.SI.Power P_heat "Heat power generated"; // (W)
-  Modelica.Units.SI.Area A_impact "Impact area of the anode"; // (m²)
-
+  Modelica.Units.SI.Power P_xray "X-ray power";
+  // (W)
+  Modelica.Units.SI.Power P_heat "Heat power generated";
+  // (W)
+  Modelica.Units.SI.Area A_impact "Impact area of the anode";
+  // (m²)
   //Ports
   Logic.RealInput InputPower annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}})));
   Logic.RealOutput Radiation_xray annotation(
     Placement(transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}})));
- 
   //Constants
   constant Real atomicNumber_W = 74;
-  
 equation
-
-  // Calculating impact area using anode angle
-  A_impact = sigma * sin((theta_anode^Modelica.Constants.pi)/180);
-  
-  // X-ray power is a fraction of the anode power based on efficiency
-  //P_xray = eta * InputPower;
+// Calculating impact area using anode angle
+  A_impact = sigma*sin((theta_anode^Modelica.Constants.pi)/180);
+// X-ray power is a fraction of the anode power based on efficiency
+//P_xray = eta * InputPower;
   P_xray = (9e-10*atomicNumber_W*HVS)*InputPower;
-  
-  // Heat generated is the remaining power after X-ray production
+// Heat generated is the remaining power after X-ray production
   P_heat = InputPower - P_xray;
-  
-   //Output radiation emitted as XRays
+//Output radiation emitted as XRays
   Radiation_xray = P_xray/A_impact;
-
+  annotation(
+    Documentation(info = "<html><head></head><body><!--StartFragment--><p><strong>Overview</strong><br>The <strong>AnodeCalculator</strong> model calculates the X‑ray radiation power and the heat power generated at an anode. It is intended for simulating the performance of an X‑ray source (such as in an X‑ray tube) by splitting the input power into portions that produce X‑rays and that result in heat generation.</p><hr><p><strong>Key Concepts and Equations</strong></p><ol><li><p><strong>Effective Impact Area (A_impact)</strong></p><ul><li><strong>Purpose:</strong> Determines the effective area on the anode where the input power impacts.</li><li><strong>Calculation:</strong><ul><li>The effective impact area is computed from the nominal impact area (<code>sigma</code>) and the anode angle (<code>theta_anode</code>).</li><li><strong>Formula:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">A_impact</span> = sigma * sin((theta_anode * π) / <span class=\"hljs-number\">180</span>)
+</code></div></div></pre></li><li><strong>Note:</strong> The anode angle is converted from degrees to radians before applying the sine function.</li></ul></li></ul></li><li><p><strong>X‑ray Power Calculation (P_xray)</strong></p><ul><li><strong>Purpose:</strong> Calculates the portion of the input power that is converted into X‑ray power.</li><li><strong>Calculation:</strong><ul><li>The X‑ray power is determined using an efficiency factor and the total input power.</li><li><strong>Efficiency Factor:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">Efficiency</span> = <span class=\"hljs-number\">9</span>e-<span class=\"hljs-number\">10</span> * atomicNumber_W * HVS
+</code></div></div></pre><ul><li><code>atomicNumber_W</code> is the atomic number of tungsten (74).</li><li><code>HVS</code> is the high-voltage supply parameter (in volts).</li></ul></li><li><strong>Formula:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">P_xray</span> = Efficiency * InputPower
+</code></div></div></pre></li></ul></li></ul></li><li><p><strong>Heat Power Generation (P_heat)</strong></p><ul><li><strong>Purpose:</strong> Computes the remaining power that is converted into heat.</li><li><strong>Calculation:</strong><ul><li>After calculating the X‑ray power, the remaining power is assumed to be lost as heat.</li><li><strong>Formula:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">P_heat</span> = InputPower - P_xray
+</code></div></div></pre></li></ul></li></ul></li><li><p><strong>X‑ray Radiation Intensity (Radiation_xray)</strong></p><ul><li><strong>Purpose:</strong> Provides the X‑ray radiation intensity as output.</li><li><strong>Calculation:</strong><ul><li>The radiation intensity is defined as the X‑ray power per unit of the effective impact area.</li><li><strong>Formula:</strong><pre class=\"!overflow-visible\"><div class=\"contain-inline-size rounded-md border-[0.5px] border-token-border-medium relative bg-token-sidebar-surface-primary dark:bg-gray-950\"><div class=\"overflow-y-auto p-4\" dir=\"ltr\"><code class=\"!whitespace-pre\"><span class=\"hljs-attr\">Radiation_xray</span> = P_xray / A_impact
+</code></div></div></pre></li></ul></li></ul></li></ol><hr><p><strong>Model Parameters and Variables</strong></p><ul><li><p><strong>Parameters:</strong></p><ul><li><code>theta_anode</code> (in degrees):<ul><li>Description: The anode angle used to compute the effective impact area.</li></ul></li><li><code>sigma</code> (in m²):<ul><li>Description: The nominal impact area of the anode.</li></ul></li><li><code>HVS</code> (in V):<ul><li>Description: The high-voltage supply value influencing the efficiency of X‑ray production.</li></ul></li></ul></li><li><p><strong>Variables:</strong></p><ul><li><code>P_xray</code> (in W):<ul><li>Description: The X‑ray power generated by the anode.</li></ul></li><li><code>P_heat</code> (in W):<ul><li>Description: The heat power generated (remaining power after X‑ray production).</li></ul></li><li><code>A_impact</code> (in m²):<ul><li>Description: The calculated effective impact area based on <code>sigma</code> and <code>theta_anode</code>.</li></ul></li></ul></li><li><p><strong>Ports:</strong></p><ul><li><code>InputPower</code> (in W):<ul><li>Description: The power supplied to the anode.</li></ul></li><li><code>Radiation_xray</code> (in W/m²):<ul><li>Description: The output port that provides the X‑ray radiation intensity.</li></ul></li></ul></li><li><p><strong>Constants:</strong></p><ul><li><code>atomicNumber_W</code>:<ul><li>Description: The atomic number of tungsten, set to 74.</li></ul></li></ul></li></ul><hr><p><strong>Usage Notes</strong></p><ul><li>The model splits the input power into two parts:<ul><li><strong>X‑ray Production:</strong> Determined by the efficiency factor (which depends on the tungsten atomic number and the high-voltage supply).</li><li><strong>Heat Generation:</strong> The leftover power that is not used for X‑ray production.</li></ul></li><li>The effective impact area (<code>A_impact</code>) influences the final X‑ray radiation intensity, providing insight into how the anode geometry (via the angle) affects performance.</li><li>Adjusting the parameters (<code>theta_anode</code>, <code>sigma</code>, and <code>HVS</code>) allows users to study their impact on both X‑ray emission and heat generation.</li><li>For radiation power to be produced the HVS must be applied.</li></ul><!--EndFragment--></body></html>"),
+    Icon(graphics = {Rectangle(fillColor = {255, 170, 0}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(origin = {-56.4907, 43.1273}, points = {{0, 20}, {0, -20}}, thickness = 1.5), Line(origin = {-56.4907, 43.1273}, points = {{-20, 0}, {20, 0}}, thickness = 1.5), Line(origin = {-56.4907, -36.8727}, points = {{-20, -20}, {20, 20}}, thickness = 1.5), Line(origin = {-56.4907, -36.8727}, points = {{-20, 20}, {20, -20}}, thickness = 1.5), Line(origin = {63.2903, -47.2523}, points = {{-20, 0}, {20, 0}}, thickness = 1.5), Line(origin = {63.5993, -26.325}, points = {{-20, 0}, {20, 0}}, thickness = 1.5), Line(origin = {63.5263, 43.0932}, points = {{-20, 0}, {20, 0}}, thickness = 1.5), Line(origin = {0, -4}, points = {{0, 96}, {0, -96}, {0, -96}}), Line(origin = {-3, 0}, points = {{-97, 0}, {97, 0}, {97, 0}})}));
 end AnodeCalculator;

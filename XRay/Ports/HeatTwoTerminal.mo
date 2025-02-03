@@ -15,8 +15,7 @@ equation
   dT = port_1.T - port_2.T;
   port_1.Q_flow = Q_flow;
   port_2.Q_flow = -Q_flow;
-  annotation (Documentation(info="<html>
-<p>
+  annotation (Documentation(info= "<html><head></head><body><p>
 This partial model contains the basic connectors and variables to
 allow heat transfer models to be created that <strong>do not store energy</strong>,
 This model defines and includes equations for the temperature
@@ -25,8 +24,7 @@ through the element from port_a to port_b, <strong>Q_flow</strong>.
 </p>
 <p>
 By extending this model, it is possible to write simple
-constitutive equations for many types of heat transfer components.
-</p>
-</html>"));
+constitutive equations for the Body Radiation model more elegantly.</p>
+</body></html>"));
 
 end HeatTwoTerminal;

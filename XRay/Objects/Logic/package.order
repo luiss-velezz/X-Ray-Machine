@@ -1,4 +1,3 @@
 RealInput
 RealOutput
-BooleanInput
-BooleanOutput
+OperatorInterface
